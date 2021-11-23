@@ -1,7 +1,6 @@
 package com.ksr.newsapp_restapi_project.Adapters;
 
 import android.content.Context;
-import android.hardware.lights.LightState;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ksr.newsapp_restapi_project.Models.Articles;
 import com.ksr.newsapp_restapi_project.R;
+import com.ksr.newsapp_restapi_project.Listeners.SelectListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -21,16 +21,18 @@ import java.util.List;
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
     private Context context;
     private List<Articles> articles;
+    private SelectListener listener;
 
-    public NewsAdapter(Context context, List<Articles> articles) {
+    public NewsAdapter(Context context, List<Articles> articles, SelectListener listener) {
         this.context = context;
         this.articles = articles;
+        this.listener = listener;
     }
 
     @NonNull
     @Override
     public NewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.headline_list_single_item,parent,false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.headline_list_single_item, parent,false);
         NewsViewHolder newsViewHolder = new NewsViewHolder(itemView);
         return newsViewHolder;
     }
@@ -44,6 +46,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         if (articles.get(position).getUrlToImage() != null){
             Picasso.get().load(articles.get(position).getUrlToImage()).into(holder.imgHeadline);
         }
+
+        holder.mainCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.OnNewsClicked(articles.get(position));
+            }
+        });
+
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.ksr.newsapp_restapi_project.Models;
 
-public class Articles {
+import java.io.Serializable;
+
+public class Articles implements Serializable {
     Source source;
     String author;
     String title;
